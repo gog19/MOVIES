@@ -1,3 +1,55 @@
 body {
     overflow-x: hidden;
 }
+
+.form__select {
+    border: 1px solid #ced4da;
+    padding: 14px 8px !important;
+    font-size: 16px;
+    color: #495057;
+    width: 100%;
+}
+
+.movies__list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.movies__item:nth-child(odd) {
+    margin-right: 50px;
+}
+
+.btn-group {
+    display: flex !important;
+    justify-content: space-between !important;
+}
+
+.trailer {
+    font-size: 18px !important;
+}
+
+.trailer:hover {
+    background-color: #007bff;
+    color: #fff !important;
+}
+
+.info {
+    font-size: 18px !important;
+}
+
+.info:hover {
+    background-color: #17a2b8;
+    color: #fff !important;
+}
+
+.bookmark {
+    font-size: 18px !important;
+}
+
+.bookmark:hover {
+    background-color: #28a745;
+    color: #fff !important;
+}
