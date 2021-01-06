@@ -17,12 +17,13 @@
             <div class="col-md-3 ml-5 mr-4">
                 <form class="movies__form" action="">
                     <input class="movies__name-input form-control mb-3 py-4" type="text" placeholder="Movie name">
-                    <input class="movies__year-input form-control mb-3 py-4" type="text" placeholder="Movie year">
+                    <input class="movies__rating-input form-control mb-3 py-4" type="text" placeholder="Rating">
                     <select class="movies__genre form__select py-2 rounded mb-3">
                         <option value="" selected>All</option>
                     </select>
                     <select class="movies__sort form__select py-2 rounded mb-3">
-                        <option value="" selected>Sort</option>
+                        <option value="max" selected>Rating (high to low)</option>
+                        <option value="min">Rating (low to high)</option>
                     </select>
                     <button class="btn btn-primary w-100 py-2">Search</button>
                 </form>
@@ -41,10 +42,10 @@
     </section>
 
     <template class="movies-template">
-        <li class="movies__item card mb-5" style="width: 30rem;">
+        <li class="movies__item card mb-5 d-flex flex-column" style="width: 30rem;">
             <img class="movies__img card-img-top rounded" alt="movie picture">
-            <div class="card-body">
-                <h5 class="movies__item-title card-title h3"></h5>
+            <div class="card-body d-flex flex-column">
+                <h5 class="movies__item-title card-title h3 mb-auto"></h5>
                 <p class="card-text d-flex align-items-center mt-3 mb-3">
                     <i class="fas fa-calendar fa-2x"></i>
                     <span class="movies__item-year h4 mb-0 ml-2"></span>
@@ -54,8 +55,8 @@
                     <span class="movies__item-rating h4 mb-0 ml-2"></span>
                 </p>
                 <div class="btn-group">
-                    <button class="trailer btn border-primary mr-3 rounded text-primary">Watch
-                        trailer</button>
+                    <a class="trailer btn border-primary mr-3 rounded text-primary" target='_blank'>Watch
+                        trailer</a>
                     <button class="info btn border-info mr-3 rounded text-info">More info</button>
                     <button class="bookmark btn border-success rounded text-success">Bookmark</button>
                 </div>

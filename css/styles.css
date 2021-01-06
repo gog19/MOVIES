@@ -25,13 +25,14 @@ body {
 .btn-group {
     display: flex !important;
     justify-content: space-between !important;
+    margin-top: auto !important;
 }
 
 .trailer {
     font-size: 18px !important;
 }
 
-.trailer:hover {
+a.trailer:hover {
     background-color: #007bff;
     color: #fff !important;
 }
