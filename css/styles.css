@@ -56,9 +56,14 @@ a.trailer:hover {
 }
 
 .bookmark__counter {
-    padding: 8px 20px;
-    background-color: #333;
-    color: #fff;
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    background-image: url('../img/bookmark.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    color: #333;
+    padding-top: 10px;
+    font-weight: bold;
     font-size: 25px;
-    border-radius: 50%;
 }

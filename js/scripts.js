@@ -73,30 +73,64 @@ elForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
     var moviesSpell = new RegExp(elInputName.value, 'gi');
-    var filteredArray = movies.filter( (film) => {
+    var filteredArray = movies.filter((film) => {
         return film.title.match(moviesSpell) && film.imdbRating >= Number(elInputRating.value) &&
-            film.categories.some( (genre) => {
+            film.categories.some((genre) => {
                 return genre === elMoviesGenre.value
             });
     })
 
+    var cloneOfArray = filteredArray.slice();
+
     if (elMoviesSort.value === 'min') {
-        filteredArray.sort( (first, second) => {
-            if (first.imdbRating < second.imdbRating) return -1;
-            if (first.imdbRating > second.imdbRating) return 1;
+        cloneOfArray.sort((a, b) => {
+            if (a.imdbRating < b.imdbRating) return -1;
+            if (a.imdbRating > b.imdbRating) return 1;
             return 0;
-        })
+        });
     }
     if (elMoviesSort.value === 'max') {
-        filteredArray.sort( (first, second) => {
-            if (first.imdbRating < second.imdbRating) return -1;
-            if (first.imdbRating > second.imdbRating) return 1;
+        cloneOfArray.sort((a, b) => {
+            if (a.imdbRating < b.imdbRating) return 1;
+            if (a.imdbRating > b.imdbRating) return -1;
             return 0;
-        }).reverse();
+        });
+    }
+
+    if (elMoviesSort.value === 'maxYear') {
+        cloneOfArray.sort((a, b) => {
+            if (a.year < b.year) return -1;
+            if (a.year > b.year) return 1;
+            return 0;
+        });
+    }
+
+    if (elMoviesSort.value === 'minYear') {
+        cloneOfArray.sort((a, b) => {
+            if (a.year < b.year) return 1;
+            if (a.year > b.year) return -1;
+            return 0;
+        });
+    }
+
+    if (elMoviesSort.value === 'begin') {
+        cloneOfArray.sort((a, b) => {
+            if (a.title < b.title) return -1;
+            if (a.title > b.title) return 1;
+            return 0;
+        });
+    }
+
+    if (elMoviesSort.value === 'end') {
+        cloneOfArray.sort((a, b) => {
+            if (a.title < b.title) return 1;
+            if (a.title > b.title) return -1;
+            return 0;
+        });
     }
 
     elMoviesList.innerHTML = '';
-    filteredArray.forEach( (film) => {
+    cloneOfArray.forEach((film) => {
         var templateClone = moviesTemplate.cloneNode(true);
 
         $_('.movies__img', templateClone).src = film.smallThumbnail;
@@ -129,7 +163,7 @@ elMoviesList.addEventListener('click', function (evt) {
     if (evt.target.matches('.bookmark')) {
 
         var buttonId = evt.target.dataset.id;
-        var newBookmarkArray = movies.find((movie) => movie.imdbId === buttonId);
+        var newBookmarkArray = movies.find(movie => movie.imdbId === buttonId);
 
         if (!arrayForBookmark.includes(newBookmarkArray)) {
             arrayForBookmark.push(newBookmarkArray)
@@ -138,7 +172,7 @@ elMoviesList.addEventListener('click', function (evt) {
         }
 
         bookmarkList.innerHTML = '';
-        arrayForBookmark.forEach( (every) => {
+        arrayForBookmark.forEach((every) => {
             var bookmarkTempClone = bookmarkTemplate.cloneNode(true);
 
             $_('.bookmark__item-title', bookmarkTempClone).textContent = every.title;
@@ -156,10 +190,7 @@ elMoviesList.addEventListener('click', function (evt) {
 bookmarkList.addEventListener('click', function (evt) {
     if (evt.target.matches('.remove')) {
 
-        var findIndexArray = arrayForBookmark.findIndex(function (element) {
-            // return Number(element) == evt.target.dataset.id;
-            return element.imdbId === evt.target.dataset.id;
-        });
+        var findIndexArray = arrayForBookmark.findIndex(element => element.imdbId === evt.target.dataset.id);
 
         arrayForBookmark.splice(findIndexArray, 1);
         counter--;
@@ -178,3 +209,5 @@ bookmarkList.addEventListener('click', function (evt) {
         bookmarkList.appendChild(bookmarkFragment);
     }
 });
+
+
