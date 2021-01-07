@@ -29,6 +29,7 @@
                 </form>
                 <div class="mt-5">
                     <h2 class="h1">Bookmarked movies</h2>
+                    <ul class="bookmark-list pl-0 mt-4"></ul>
                 </div>
             </div>
             <div class="movies__wrapper col-md-8 ml-5">
@@ -43,7 +44,8 @@
 
     <template class="movies-template">
         <li class="movies__item card mb-5 d-flex flex-column" style="width: 30rem;">
-            <img class="movies__img card-img-top rounded" alt="movie picture">
+            <img class="movies__img card-img-top rounded" src="https://picsum.photos/id/100/200/100"
+                alt="movie picture">
             <div class="card-body d-flex flex-column">
                 <h5 class="movies__item-title card-title h3 mb-auto"></h5>
                 <p class="card-text d-flex align-items-center mt-3 mb-3">
@@ -60,6 +62,15 @@
                     <button class="info btn border-info mr-3 rounded text-info">More info</button>
                     <button class="bookmark btn border-success rounded text-success">Bookmark</button>
                 </div>
+            </div>
+        </li>
+    </template>
+
+    <template class="bookmark-template">
+        <li class="movies__item card mb-5 d-flex flex-column" style="width: 30rem;">
+            <div class="card-body d-flex flex-column">
+                <h5 class="bookmark__item-title card-title h4 mb-auto text-center mb-3"></h5>
+                <button class="remove btn btn-danger w-25 rounded text-white mt-4 ml-auto">Remove</button>
             </div>
         </li>
     </template>

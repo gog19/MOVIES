@@ -70,6 +70,7 @@ emptyGenresArray.forEach((genre) => {
     elMoviesGenre.appendChild(newOption);
 });
 
+// Submit hodisasi orqali listga qidirilgan kinolar chiqaramiz
 elForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
@@ -96,10 +97,8 @@ elForm.addEventListener('submit', function (evt) {
         }).reverse();
     }
 
-    console.log(filteredArray);
-
     elMoviesList.innerHTML = '';
-    filteredArray.forEach(function (film) {
+    filteredArray.forEach(function (film, index) {
         var templateClone = moviesTemplate.cloneNode(true);
 
         $_('.movies__img', templateClone).src = film.smallThumbnail;
@@ -107,6 +106,7 @@ elForm.addEventListener('submit', function (evt) {
         $_('.movies__item-year', templateClone).textContent = film.year;
         $_('.movies__item-rating', templateClone).textContent = film.imdbRating;
         $_('.trailer', templateClone).href = `https://www.youtube.com/watch?v=${film.youtubeId}`;
+        $_('.bookmark', templateClone).dataset.id = index
 
         moviesFragment.appendChild(templateClone);
 
@@ -116,4 +116,50 @@ elForm.addEventListener('submit', function (evt) {
 
     elMoviesList.appendChild(moviesFragment);
 
-}); 
+});
+
+// Topilgan kinolarni bookmarkga saqlash
+var bookmarkFragment = document.createDocumentFragment();
+var bookmarkTemplate = document.querySelector('.bookmark-template').content;
+var bookmarkList = document.querySelector('.bookmark-list');
+var arrayForBookmark = [];
+
+elMoviesList.addEventListener('click', function (evt) {
+
+    if (evt.target.matches('.bookmark')) {
+        bookmarkList.innerHTML = '';
+        movies.forEach(function (movie) {
+            // arrayForBookmark.push(movie.title);
+            // console.log(arrayForBookmark);
+            var bookmarkTempClone = bookmarkTemplate.cloneNode(true);
+
+            $_('.bookmark__item-title', bookmarkTempClone).textContent = movie.title;
+
+            bookmarkFragment.appendChild(bookmarkTempClone);
+        });
+
+        bookmarkList.appendChild(bookmarkFragment);
+    }
+
+});
+
+
+// Bookmark qilingan filmlarni o`chirib tashlash
+bookmarkList.addEventListener('click', function (evt) {
+    if (evt.target.matches('.remove')) {
+
+        console.log('ishladi');
+        arrayForBookmark.splice(evt.target.dataset.id, 1);
+        
+        bookmarkList.innerHTML = '';
+        movies.forEach(function (movie) {
+            // arrayForBookmark.push(movie.title);
+            // console.log(arrayForBookmark);
+            var bookmarkTempClone = bookmarkTemplate.cloneNode(true);
+
+            $_('.bookmark__item-title', bookmarkTempClone).textContent = movie.title;
+
+            bookmarkFragment.appendChild(bookmarkTempClone);
+        });
+    }
+})
