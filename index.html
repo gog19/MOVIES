@@ -28,7 +28,10 @@
                     <button class="btn btn-primary w-100 py-2">Search</button>
                 </form>
                 <div class="mt-5">
-                    <h2 class="h1">Bookmarked movies</h2>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h2 class="h1">Bookmarked movies</h2>
+                        <span class="bookmark__counter">0</span>
+                    </div>
                     <ul class="bookmark-list pl-0 mt-4"></ul>
                 </div>
             </div>
@@ -70,7 +73,7 @@
         <li class="movies__item card mb-3 d-flex flex-column" style="width: 30rem;">
             <div class="card-body d-flex flex-column">
                 <h5 class="bookmark__item-title card-title h4 mb-auto text-center mb-3"></h5>
-                <button class="btn btn-danger w-25 rounded text-white mt-4 ml-auto">Remove</button>
+                <button class="remove btn btn-danger w-25 rounded text-white mt-4 ml-auto">Remove</button>
             </div>
         </li>
     </template>

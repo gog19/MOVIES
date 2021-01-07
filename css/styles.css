@@ -18,7 +18,7 @@ body {
     flex-wrap: wrap;
 }
 
-.movies__item:nth-child(odd) {
+.movies__item {
     margin-right: 50px;
 }
 
@@ -53,4 +53,12 @@ a.trailer:hover {
 .bookmark:hover {
     background-color: #28a745;
     color: #fff !important;
+}
+
+.bookmark__counter {
+    padding: 8px 20px;
+    background-color: #333;
+    color: #fff;
+    font-size: 25px;
+    border-radius: 50%;
 }
