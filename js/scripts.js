@@ -98,7 +98,7 @@ elForm.addEventListener('submit', function (evt) {
     }
 
     elMoviesList.innerHTML = '';
-    filteredArray.forEach(function (film, index) {
+    filteredArray.forEach(function (film) {
         var templateClone = moviesTemplate.cloneNode(true);
 
         $_('.movies__img', templateClone).src = film.smallThumbnail;
@@ -106,7 +106,7 @@ elForm.addEventListener('submit', function (evt) {
         $_('.movies__item-year', templateClone).textContent = film.year;
         $_('.movies__item-rating', templateClone).textContent = film.imdbRating;
         $_('.trailer', templateClone).href = `https://www.youtube.com/watch?v=${film.youtubeId}`;
-        $_('.bookmark', templateClone).dataset.id = index
+        $_('.bookmark', templateClone).dataset.id = film.imdbId
 
         moviesFragment.appendChild(templateClone);
 
@@ -127,20 +127,29 @@ var arrayForBookmark = [];
 elMoviesList.addEventListener('click', function (evt) {
 
     if (evt.target.matches('.bookmark')) {
+
+        var buttonId = evt.target.dataset.id;
+        var newBookmarkArray = movies.find(function (movie) {
+            return movie.imdbId === buttonId;
+        });
+
+        if (!arrayForBookmark.includes(newBookmarkArray)) {
+            arrayForBookmark.push(newBookmarkArray)
+        }
+        console.log(newBookmarkArray);
         bookmarkList.innerHTML = '';
-        movies.forEach(function (movie) {
-            // arrayForBookmark.push(movie.title);
-            // console.log(arrayForBookmark);
+
+        arrayForBookmark.forEach(function (every) {
             var bookmarkTempClone = bookmarkTemplate.cloneNode(true);
 
-            $_('.bookmark__item-title', bookmarkTempClone).textContent = movie.title;
+            $_('.bookmark__item-title', bookmarkTempClone).textContent = every.title;
+            $_('.remove', bookmarkTempClone).dataset.id = every.imdbId;
 
             bookmarkFragment.appendChild(bookmarkTempClone);
-        });
+        })
 
         bookmarkList.appendChild(bookmarkFragment);
     }
-
 });
 
 
@@ -148,18 +157,23 @@ elMoviesList.addEventListener('click', function (evt) {
 bookmarkList.addEventListener('click', function (evt) {
     if (evt.target.matches('.remove')) {
 
-        console.log('ishladi');
-        arrayForBookmark.splice(evt.target.dataset.id, 1);
-        
+        var findIndexArray = arrayForBookmark.findIndex(function (element) {
+            // return Number(element) == evt.target.dataset.id;
+            return element.imdbId === evt.target.dataset.id;
+        });
+
+        arrayForBookmark.splice(findIndexArray, 1);
+
         bookmarkList.innerHTML = '';
-        movies.forEach(function (movie) {
-            // arrayForBookmark.push(movie.title);
-            // console.log(arrayForBookmark);
+        arrayForBookmark.forEach(function (every) {
             var bookmarkTempClone = bookmarkTemplate.cloneNode(true);
 
-            $_('.bookmark__item-title', bookmarkTempClone).textContent = movie.title;
+            $_('.bookmark__item-title', bookmarkTempClone).textContent = every.title;
+            $_('.remove', bookmarkTempClone).dataset.id = every.imdbId;
 
             bookmarkFragment.appendChild(bookmarkTempClone);
-        });
+        })
+
+        bookmarkList.appendChild(bookmarkFragment);
     }
-})
+});
