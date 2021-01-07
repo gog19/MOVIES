@@ -1,46 +1,3 @@
-var $_ = (selector, node = document) => node.querySelector(selector);
-
-
-var $$_ = (selector, node = document) => node.querySelectorAll(selector);
-
-
-var createElement = (element, elementClass, text) => {
-    var newElement = document.createElement(element);
-
-    if (elementClass) {
-        newElement.setAttribute('class', elementClass);
-    }
-
-    if (text) {
-        newElement.textContent = text;
-    }
-
-    return newElement;
-};
-
-// {// var newVersionOfArray = movies.map(function (item) {
-//     return {
-//         categories: item.Categories.split('|'),
-//         title: item.Title.toString(),
-//         imdbId: item.imdb_id,
-//         imdbRating: item.imdb_rating,
-//         language: item.language,
-//         year: item.movie_year,
-//         runtime: item.runtime,
-//         summary: item.summary,
-//         youtubeId: item.ytid
-//     }
-// })
-
-// var getSmallImg = function (youtubeId) {
-//     return `http://i3.ytimg.com/vi/${youtubeId}/hqdefault.jpg`
-// }
-
-// var getBigImg = function (youtubeId) {
-//     return `http://i3.ytimg.com/vi/${youtubeId}/maxresdefault.jpg`
-// }}
-
-
 var elForm = document.querySelector('.movies__form');
 var elInputName = document.querySelector('.movies__name-input');
 var elInputRating = document.querySelector('.movies__rating-input');
@@ -138,7 +95,8 @@ elForm.addEventListener('submit', function (evt) {
         $_('.movies__item-year', templateClone).textContent = film.year;
         $_('.movies__item-rating', templateClone).textContent = film.imdbRating;
         $_('.trailer', templateClone).href = `https://www.youtube.com/watch?v=${film.youtubeId}`;
-        $_('.bookmark', templateClone).dataset.id = film.imdbId
+        $_('.bookmark', templateClone).dataset.imdbId = film.imdbId;
+        $_('.info', templateClone).dataset.imdbId = film.imdbId;
 
         moviesFragment.appendChild(templateClone);
 
@@ -162,13 +120,16 @@ elMoviesList.addEventListener('click', function (evt) {
 
     if (evt.target.matches('.bookmark')) {
 
-        var buttonId = evt.target.dataset.id;
-        var newBookmarkArray = movies.find(movie => movie.imdbId === buttonId);
+        var newBookmarkArray = movies.find(movie => movie.imdbId === evt.target.dataset.id);
 
         if (!arrayForBookmark.includes(newBookmarkArray)) {
             arrayForBookmark.push(newBookmarkArray)
             counter++;
             bookmarkCounter.textContent = counter;
+        }
+
+        if (bookmarkList.children === null) {
+            return bookmarkCounter.style.display = 'none';
         }
 
         bookmarkList.innerHTML = '';
@@ -209,5 +170,4 @@ bookmarkList.addEventListener('click', function (evt) {
         bookmarkList.appendChild(bookmarkFragment);
     }
 });
-
 
