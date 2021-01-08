@@ -35,7 +35,7 @@ elForm.addEventListener('submit', function (evt) {
             film.categories.some((genre) => {
                 return genre === elMoviesGenre.value
             });
-    })
+    });
 
     var cloneOfArray = filteredArray.slice();
 
@@ -109,49 +109,42 @@ elForm.addEventListener('submit', function (evt) {
 });
 
 // Topilgan kinolarni bookmarkga saqlash
+var elCreateFunction = function () {
+    bookmarkList.innerHTML = '';
+    arrayForBookmark.forEach(function (every) {
+        var bookmarkTempClone = bookmarkTemplate.cloneNode(true);
+
+        $_('.bookmark__item-title', bookmarkTempClone).textContent = every.title;
+        $_('.remove', bookmarkTempClone).dataset.id = every.imdbId;
+
+        bookmarkFragment.appendChild(bookmarkTempClone);
+    });
+    bookmarkList.appendChild(bookmarkFragment);
+}
+
 var bookmarkFragment = document.createDocumentFragment();
 var bookmarkTemplate = document.querySelector('.bookmark-template').content;
 var bookmarkList = document.querySelector('.bookmark-list');
 var arrayForBookmark = JSON.parse(localStorage.getItem('todolist')) || [];
-console.log(JSON.parse(localStorage.getItem(`todolist`)));
 var bookmarkCounter = document.querySelector('.bookmark__counter');
 
 bookmarkCounter.textContent = arrayForBookmark.length;
-arrayForBookmark.forEach(function (every) {
-    var bookmarkTempClone = bookmarkTemplate.cloneNode(true);
+elCreateFunction();
 
-    $_('.bookmark__item-title', bookmarkTempClone).textContent = every.title;
-    $_('.remove', bookmarkTempClone).dataset.id = every.imdbId;
-
-    bookmarkFragment.appendChild(bookmarkTempClone);
-});
-bookmarkList.appendChild(bookmarkFragment);
 
 elMoviesList.addEventListener('click', function (evt) {
     if (evt.target.matches('.bookmark')) {
-
         var newBookmarkArray = movies.find(movie => movie.imdbId === evt.target.dataset.imdbId);
 
         if (!arrayForBookmark.includes(newBookmarkArray)) {
             arrayForBookmark.push(newBookmarkArray)
             bookmarkCounter.textContent = arrayForBookmark.length;
-            localStorage.setItem('todolist', JSON.stringify(arrayForBookmark))
+            localStorage.setItem('todolist', JSON.stringify(arrayForBookmark));
         }
 
-        if (bookmarkList.children === null) {
-            return bookmarkCounter.style.display = 'none';
-        }
+        if (bookmarkList.children === null) bookmarkCounter.style.display = 'none';
 
-        bookmarkList.innerHTML = '';
-        arrayForBookmark.forEach(function (every) {
-            var bookmarkTempClone = bookmarkTemplate.cloneNode(true);
-
-            $_('.bookmark__item-title', bookmarkTempClone).textContent = every.title;
-            $_('.remove', bookmarkTempClone).dataset.id = every.imdbId;
-
-            bookmarkFragment.appendChild(bookmarkTempClone);
-        });
-        bookmarkList.appendChild(bookmarkFragment);
+        elCreateFunction();
     }
 });
 
@@ -167,17 +160,8 @@ bookmarkList.addEventListener('click', function (evt) {
 
         localStorage.setItem('todolist', JSON.stringify(arrayForBookmark))
 
-        bookmarkList.innerHTML = '';
-        arrayForBookmark.forEach(function (every) {
-            var bookmarkTempClone = bookmarkTemplate.cloneNode(true);
+        elCreateFunction();
 
-            $_('.bookmark__item-title', bookmarkTempClone).textContent = every.title;
-            $_('.remove', bookmarkTempClone).dataset.id = every.imdbId;
-
-            bookmarkFragment.appendChild(bookmarkTempClone);
-        })
-
-        bookmarkList.appendChild(bookmarkFragment);
     }
 });
 
