@@ -112,20 +112,30 @@ elForm.addEventListener('submit', function (evt) {
 var bookmarkFragment = document.createDocumentFragment();
 var bookmarkTemplate = document.querySelector('.bookmark-template').content;
 var bookmarkList = document.querySelector('.bookmark-list');
-var arrayForBookmark = [];
-var counter = 0;
+var arrayForBookmark = JSON.parse(localStorage.getItem('todolist')) || [];
+console.log(JSON.parse(localStorage.getItem(`todolist`)));
 var bookmarkCounter = document.querySelector('.bookmark__counter');
 
-elMoviesList.addEventListener('click', function (evt) {
+bookmarkCounter.textContent = arrayForBookmark.length;
+arrayForBookmark.forEach(function (every) {
+    var bookmarkTempClone = bookmarkTemplate.cloneNode(true);
 
+    $_('.bookmark__item-title', bookmarkTempClone).textContent = every.title;
+    $_('.remove', bookmarkTempClone).dataset.id = every.imdbId;
+
+    bookmarkFragment.appendChild(bookmarkTempClone);
+});
+bookmarkList.appendChild(bookmarkFragment);
+
+elMoviesList.addEventListener('click', function (evt) {
     if (evt.target.matches('.bookmark')) {
 
-        var newBookmarkArray = movies.find(movie => movie.imdbId === evt.target.dataset.id);
+        var newBookmarkArray = movies.find(movie => movie.imdbId === evt.target.dataset.imdbId);
 
         if (!arrayForBookmark.includes(newBookmarkArray)) {
             arrayForBookmark.push(newBookmarkArray)
-            counter++;
-            bookmarkCounter.textContent = counter;
+            bookmarkCounter.textContent = arrayForBookmark.length;
+            localStorage.setItem('todolist', JSON.stringify(arrayForBookmark))
         }
 
         if (bookmarkList.children === null) {
@@ -133,7 +143,7 @@ elMoviesList.addEventListener('click', function (evt) {
         }
 
         bookmarkList.innerHTML = '';
-        arrayForBookmark.forEach((every) => {
+        arrayForBookmark.forEach(function (every) {
             var bookmarkTempClone = bookmarkTemplate.cloneNode(true);
 
             $_('.bookmark__item-title', bookmarkTempClone).textContent = every.title;
@@ -141,7 +151,6 @@ elMoviesList.addEventListener('click', function (evt) {
 
             bookmarkFragment.appendChild(bookmarkTempClone);
         });
-
         bookmarkList.appendChild(bookmarkFragment);
     }
 });
@@ -154,8 +163,9 @@ bookmarkList.addEventListener('click', function (evt) {
         var findIndexArray = arrayForBookmark.findIndex(element => element.imdbId === evt.target.dataset.id);
 
         arrayForBookmark.splice(findIndexArray, 1);
-        counter--;
-        bookmarkCounter.textContent = counter;
+        bookmarkCounter.textContent = arrayForBookmark.length;
+
+        localStorage.setItem('todolist', JSON.stringify(arrayForBookmark))
 
         bookmarkList.innerHTML = '';
         arrayForBookmark.forEach(function (every) {
