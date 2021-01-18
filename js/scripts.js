@@ -17,7 +17,7 @@ for (var movie of movies) {
     }
 }
 
-emptyGenresArray.forEach((genre) => {
+emptyGenresArray.forEach(genre => {
     newOption = document.createElement('option');
     newOption.className = 'movies__option'
     newOption.textContent = genre;
@@ -26,15 +26,13 @@ emptyGenresArray.forEach((genre) => {
 });
 
 // Submit hodisasi orqali listga qidirilgan kinolar chiqaramiz
-elForm.addEventListener('submit', function (evt) {
+elForm.addEventListener('submit', evt => {
     evt.preventDefault();
 
     var moviesSpell = new RegExp(elInputName.value, 'gi');
-    var filteredArray = movies.filter((film) => {
+    var filteredArray = movies.filter(film => {
         return film.title.match(moviesSpell) && film.imdbRating >= Number(elInputRating.value) &&
-            film.categories.some((genre) => {
-                return genre === elMoviesGenre.value
-            });
+            film.categories.some(genre => genre === elMoviesGenre.value);
     });
 
     var cloneOfArray = filteredArray.slice();
@@ -87,7 +85,7 @@ elForm.addEventListener('submit', function (evt) {
     }
 
     elMoviesList.innerHTML = '';
-    cloneOfArray.forEach((film) => {
+    cloneOfArray.forEach(film => {
         var templateClone = moviesTemplate.cloneNode(true);
 
         $_('.movies__img', templateClone).src = film.smallThumbnail;
@@ -109,9 +107,9 @@ elForm.addEventListener('submit', function (evt) {
 });
 
 // Topilgan kinolarni bookmarkga saqlash
-var elCreateFunction = function () {
+var elCreateFunction = () => {
     bookmarkList.innerHTML = '';
-    arrayForBookmark.forEach(function (every) {
+    arrayForBookmark.forEach(every => {
         var bookmarkTempClone = bookmarkTemplate.cloneNode(true);
 
         $_('.bookmark__item-title', bookmarkTempClone).textContent = every.title;
@@ -132,7 +130,7 @@ bookmarkCounter.textContent = arrayForBookmark.length;
 elCreateFunction();
 
 
-elMoviesList.addEventListener('click', function (evt) {
+elMoviesList.addEventListener('click', evt => {
     if (evt.target.matches('.bookmark')) {
         var newBookmarkArray = movies.find(movie => movie.imdbId === evt.target.dataset.imdbId);
 
@@ -142,15 +140,16 @@ elMoviesList.addEventListener('click', function (evt) {
             localStorage.setItem('todolist', JSON.stringify(arrayForBookmark));
         }
 
-        if (bookmarkList.children === null) bookmarkCounter.style.display = 'none';
-
         elCreateFunction();
     }
 });
 
+var counter = 0
+var counterId = () => counter++
+
 
 // Bookmark qilingan filmlarni o`chirib tashlash
-bookmarkList.addEventListener('click', function (evt) {
+bookmarkList.addEventListener('click', evt => {
     if (evt.target.matches('.remove')) {
 
         var findIndexArray = arrayForBookmark.findIndex(element => element.imdbId === evt.target.dataset.id);
@@ -164,4 +163,3 @@ bookmarkList.addEventListener('click', function (evt) {
 
     }
 });
-
