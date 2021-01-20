@@ -25,7 +25,21 @@ emptyGenresArray.forEach(genre => {
     elMoviesGenre.appendChild(newOption);
 });
 
-// Submit hodisasi orqali listga qidirilgan kinolar chiqaramiz
+var elResultList = document.querySelector('.buttons-group');
+var elTemplate = document.querySelector('.buttons-template').content;
+var elFragment = document.createDocumentFragment();
+var numberPerPage = 6;
+var count = 1;
+var currentPagePag = 1;
+
+// var countPages = function (currentPage, arrayWithFiltered) {
+//     var begin = ((currentPage - 1) * numberPerPage);
+//     var end = begin + numberPerPage;
+
+//     return arrayWithFiltered.slice(begin, end);
+// }
+
+// Submit hodisasi orqali listga qidirilgan kinolarni chiqaramiz
 elForm.addEventListener('submit', evt => {
     evt.preventDefault();
 
@@ -34,6 +48,22 @@ elForm.addEventListener('submit', evt => {
         return film.title.match(moviesSpell) && film.imdbRating >= Number(elInputRating.value) &&
             film.categories.some(genre => genre === elMoviesGenre.value);
     });
+
+    countPages(1, filteredArray);
+
+    var numberOfPages = Math.ceil(filteredArray.length / numberPerPage);
+
+    elResultList.innerHTML = '';
+    for (let x = 1; x <= numberOfPages; x++) {
+        var cloneTemplate = elTemplate.cloneNode(true);
+
+        cloneTemplate.querySelector('.buttons-link').textContent = x;
+        cloneTemplate.querySelector('.buttons-link').dataset.id = count++;
+
+        elFragment.appendChild(cloneTemplate);
+    }
+
+    elResultList.appendChild(elFragment);
 
     var cloneOfArray = filteredArray.slice();
 
@@ -84,27 +114,41 @@ elForm.addEventListener('submit', evt => {
         });
     }
 
-    elMoviesList.innerHTML = '';
-    cloneOfArray.forEach(film => {
-        var templateClone = moviesTemplate.cloneNode(true);
-
-        $_('.movies__img', templateClone).src = film.smallThumbnail;
-        $_('.movies__item-title', templateClone).textContent = film.title;
-        $_('.movies__item-year', templateClone).textContent = film.year;
-        $_('.movies__item-rating', templateClone).textContent = film.imdbRating;
-        $_('.trailer', templateClone).href = `https://www.youtube.com/watch?v=${film.youtubeId}`;
-        $_('.bookmark', templateClone).dataset.imdbId = film.imdbId;
-        $_('.info', templateClone).dataset.imdbId = film.imdbId;
-
-        moviesFragment.appendChild(templateClone);
-
-    });
-
-    total.textContent = filteredArray.length
-
-    elMoviesList.appendChild(moviesFragment);
+    total.textContent = filteredArray.length;
 
 });
+
+elResultList.addEventListener('click', evt => {
+    var elsLink = document.querySelectorAll('.page-item');
+    elsLink.forEach(item => {
+        item.classList.remove('active');
+    })
+    if (evt.target.matches('.buttons-link')) {
+
+        currentPage = Number(evt.target.dataset.id);
+        evt.target.parentElement.classList.add('active');
+
+        var sumOfPages = countPages(evt.target.dataset.id);
+        console.log(sumOfPages);
+
+
+        elMoviesList.innerHTML = '';
+        sumOfPages.forEach(page => {
+            var templateClone = moviesTemplate.cloneNode(true);
+
+            $_('.movies__img', templateClone).src = page.smallThumbnail;
+            $_('.movies__item-title', templateClone).textContent = page.title;
+            $_('.movies__item-year', templateClone).textContent = page.year;
+            $_('.movies__item-rating', templateClone).textContent = page.imdbRating;
+            $_('.trailer', templateClone).href = `https://www.youtube.com/watch?v=${page.youtubeId}`;
+            $_('.bookmark', templateClone).dataset.imdbId = page.imdbId;
+            $_('.info', templateClone).dataset.imdbId = page.imdbId;
+
+            moviesFragment.appendChild(templateClone);
+        });
+        elMoviesList.appendChild(moviesFragment);
+    }
+})
 
 // Topilgan kinolarni bookmarkga saqlash
 var elCreateFunction = () => {
@@ -163,3 +207,4 @@ bookmarkList.addEventListener('click', evt => {
 
     }
 });
+
