@@ -55,9 +55,9 @@ a.trailer:hover {
     color: #fff !important;
 }
 
-.bookmark__counter {
-    width: 70px;
-    height: 70px;
+.bookmark-counter {
+    width: 50px;
+    height: 50px;
     text-align: center;
     background-image: url('../img/bookmark.svg');
     background-repeat: no-repeat;
@@ -65,5 +65,37 @@ a.trailer:hover {
     color: #333;
     padding-top: 10px;
     font-weight: bold;
-    font-size: 25px;
+    font-size: 16px;
 }
+
+html {
+    scroll-behavior: smooth;
+  }
+  
+  .movie__poster {
+    object-fit: cover;
+  }
+  
+  .movie-info-modal .modal-dialog {
+    transition: opacity 0.5s ease,
+      transform 0.5s ease !important;
+    opacity: 0;
+    /* transform: translateY(1000px) !important; */
+    transform: scale(0) !important;
+    /* transform: rotateY(360deg) !important; */
+  }
+  
+  .movie-info-modal.show .modal-dialog {
+    opacity: 1;
+    /* transform: translateY(0) !important; */
+    transform: scale(1) !important;
+    /* transform: rotateY(0deg) !important; */
+  }
+  
+  mark {
+    display: inline-block;
+    /* background-color: transparent;
+    color: dodgerblue;
+    text-decoration: underline; */
+  }
+  
