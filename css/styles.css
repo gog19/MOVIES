@@ -94,8 +94,6 @@ html {
   
   mark {
     display: inline-block;
-    /* background-color: transparent;
-    color: dodgerblue;
-    text-decoration: underline; */
+    background-color: rgb(250, 255, 164);
   }
   
