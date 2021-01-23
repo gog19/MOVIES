@@ -1,5 +1,6 @@
 var foundMovies = [];
 var titleInputValue = '';
+var PER_PAGE = 6;
 
 var elForm = $_('.js-search-form');
 var elResult = $_('.search-results');
@@ -84,7 +85,7 @@ var displayMoviesCard = (data) => {
 }
 
 
-
+var elNoResultsAlert = $_('.js-no-results-alert');
 
 
 elForm.addEventListener('submit', evt => {
@@ -97,11 +98,70 @@ elForm.addEventListener('submit', evt => {
 
   foundMovies = moviesFilterFunction(titleInputValue, ratingInputValue, genreOfMovies);
 
-
+  elNoResultsAlert.classList.add('d-none');
   elCounterLength.textContent = foundMovies.length;
+
+  if (!foundMovies.length) {
+    elResult.innerHTML = '';
+    elNoResultsAlert.classList.remove('d-none');
+    return
+  }
 
   sortMovies(foundMovies, sorting);
 
-  displayMoviesCard(foundMovies);
+  displayMoviesCard(pagenationCounter(1));
+
+  displayPagination(foundMovies);
+
+
 
 });
+
+
+var pageTemplate = $_('#pagination-item-template').content;
+var resultPagenation = $_('.pagination');
+
+var pagenationCounter = pageNum => {
+  var begin = (pageNum - 1) * PER_PAGE;
+  var end = begin + PER_PAGE;
+
+  return foundMovies.slice(begin, end);
+}
+
+var displayPagination = movies => {
+  var pageInNumber = Math.ceil(movies.length / PER_PAGE);
+
+  resultPagenation.innerHTML = '';
+  var pageFragment = document.createDocumentFragment();
+
+  for (let i = 1; i <= pageInNumber; i++) {
+    var pageTemplateClone = pageTemplate.cloneNode(true);
+
+    $_('.js-page-link', pageTemplateClone).textContent = i;
+    $_('.js-page-link', pageTemplateClone).dataset.page = i;
+
+    pageFragment.appendChild(pageTemplateClone);
+  }
+
+  resultPagenation.appendChild(pageFragment);
+
+  resultPagenation.querySelector('.page-item').classList.add('active');
+
+}
+
+
+resultPagenation.addEventListener('click', page => {
+  if (page.target.matches('.js-page-link')) {
+    page.preventDefault();
+
+    var pageOfMovies = Number(page.target.dataset.page);
+
+    displayMoviesCard(pagenationCounter(pageOfMovies));
+
+    resultPagenation.querySelectorAll('.page-item').forEach(page => page.classList.remove('active'));
+
+    page.target.closest('.page-item').classList.add('active');
+
+    window.scrollTo(0, 0);
+  }
+})
